@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/button";
+import { PageTitle } from "@/components/section-head";
 import { karya } from "@/data/profile";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -29,83 +31,54 @@ export default async function HalamanProyek({ params }: Params) {
   const proyek = karya[indeks];
   const berikutnya = karya[(indeks + 1) % karya.length];
 
-  const tautan = [
-    proyek.demo && { label: "Lihat situs", url: proyek.demo },
-    proyek.repo && { label: "Kode sumber", url: proyek.repo },
-  ].filter(Boolean) as { label: string; url: string }[];
-
   const meta = [
-    { label: "Tahun", nilai: proyek.tahun },
-    { label: "Jenis", nilai: proyek.kategori },
-    { label: "Peran", nilai: proyek.peran },
-    { label: "Teknologi", nilai: proyek.stack.join(" · ") },
+    { label: "Year", nilai: proyek.tahun },
+    { label: "Type", nilai: proyek.kategori },
+    { label: "Role", nilai: proyek.peran },
   ];
 
   return (
-    <article className="shell pt-10 pb-24 sm:pt-16 sm:pb-32">
+    <article className="shell pt-10 md:pt-[52px]">
       <Link
         href="/#karya"
-        className="label link-sweep text-ink transition-colors duration-300 hover:text-accent"
+        className="mb-8 inline-block text-gray transition-colors duration-200 hover:text-white"
       >
-        ← Semua karya
+        {"<~ all works"}
       </Link>
 
-      <header className="mt-10 border-b border-rule pb-10">
-        <h1 className="max-w-4xl font-display text-[clamp(2.25rem,7vw,5rem)] font-bold leading-[0.95] tracking-[-0.04em]">
-          {proyek.nama}
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-          {proyek.ringkas}
-        </p>
-      </header>
+      <PageTitle judul={proyek.nama} keterangan={proyek.ringkas} />
 
-      <div className="grid gap-12 pt-10 md:grid-cols-[18rem_1fr] md:gap-16">
-        <aside className="md:sticky md:top-24 md:self-start">
-          <dl className="space-y-6">
-            {meta.map((m) => (
-              <div key={m.label}>
-                <dt className="label mb-2">{m.label}</dt>
-                <dd className="text-sm leading-relaxed">{m.nilai}</dd>
-              </div>
-            ))}
-          </dl>
+      {proyek.sampul && (
+        <div className="relative mt-12 aspect-[16/9] overflow-hidden border border-gray">
+          <Image
+            src={proyek.sampul}
+            alt={proyek.nama}
+            fill
+            priority
+            sizes="(min-width: 1056px) 1024px, 100vw"
+            className="object-cover"
+          />
+        </div>
+      )}
 
-          {tautan.length > 0 && (
-            <div className="mt-8 border-t border-rule pt-6">
-              <p className="label mb-3">Tautan</p>
-              <ul className="space-y-2">
-                {tautan.map((t) => (
-                  <li key={t.label}>
-                    <a
-                      href={t.url}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="link-sweep text-sm transition-colors duration-300 hover:text-accent"
-                    >
-                      {t.label} ↗
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </aside>
-
+      <div className="mt-12 grid gap-12 md:grid-cols-[1fr_17rem] md:gap-16">
         <div className="min-w-0">
-          <div className="max-w-2xl space-y-5 text-[1.0625rem] leading-relaxed sm:text-lg">
+          <div className="space-y-[26px] leading-[26px]">
             {proyek.deskripsi.map((paragraf, i) => (
               <p key={i}>{paragraf}</p>
             ))}
           </div>
 
           {proyek.sorotan && proyek.sorotan.length > 0 && (
-            <div className="mt-12 border-t border-rule pt-6">
-              <p className="label mb-4">Yang dikerjakan</p>
-              <ul className="max-w-2xl space-y-3">
+            <div className="mt-12">
+              <h2 className="mb-6 text-2xl font-medium text-white">
+                <span className="text-primary">#</span>highlights
+              </h2>
+              <ul className="space-y-3">
                 {proyek.sorotan.map((s) => (
-                  <li key={s} className="flex gap-4 text-sm leading-relaxed">
-                    <span aria-hidden className="text-accent">
-                      —
+                  <li key={s} className="flex gap-3 leading-[26px]">
+                    <span aria-hidden className="shrink-0 text-primary">
+                      {"->"}
                     </span>
                     <span>{s}</span>
                   </li>
@@ -115,7 +88,7 @@ export default async function HalamanProyek({ params }: Params) {
           )}
 
           {proyek.gambar && proyek.gambar.length > 0 && (
-            <div className="mt-14 space-y-6">
+            <div className="mt-12 space-y-4">
               {proyek.gambar.map((g) => (
                 <Image
                   key={g.src}
@@ -123,29 +96,61 @@ export default async function HalamanProyek({ params }: Params) {
                   alt={g.alt}
                   width={1600}
                   height={1000}
-                  className="h-auto w-full border border-rule object-cover"
+                  className="h-auto w-full border border-gray object-cover"
                   sizes="(min-width: 768px) 60vw, 100vw"
                 />
               ))}
             </div>
           )}
         </div>
+
+        <aside className="flex flex-col gap-4 md:sticky md:top-24 md:self-start">
+          <dl className="border border-gray py-2">
+            {meta.map((m, i) => (
+              <div key={m.label}>
+                {i > 0 && <span aria-hidden className="my-2 block h-px bg-gray" />}
+                <dt className="px-2 font-semibold text-white">{m.label}</dt>
+                <dd className="px-2">{m.nilai}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <div className="border border-gray py-2">
+            <p className="px-2 font-semibold text-white">Stack</p>
+            <span aria-hidden className="my-2 block h-px bg-gray" />
+            <p className="flex flex-wrap gap-x-2 gap-y-2 px-2">
+              {proyek.stack.map((s) => (
+                <span key={s}>{s}</span>
+              ))}
+            </p>
+          </div>
+
+          {(proyek.demo || proyek.repo) && (
+            <div className="flex flex-wrap gap-4">
+              {proyek.demo && (
+                <Button href={proyek.demo} luar>
+                  {"Live <~>"}
+                </Button>
+              )}
+              {proyek.repo && (
+                <Button href={proyek.repo} varian={proyek.demo ? "secondary" : "primary"} luar>
+                  {"Github >="}
+                </Button>
+              )}
+            </div>
+          )}
+        </aside>
       </div>
 
-      <nav className="mt-24 border-t border-rule pt-6">
-        <p className="label mb-4">Selanjutnya</p>
+      <nav className="mt-[112px] flex items-center gap-4">
+        <span aria-hidden className="h-px flex-1 bg-primary" />
         <Link
           href={`/karya/${berikutnya.slug}`}
-          className="group flex items-baseline justify-between gap-6"
+          className="group text-right"
         >
-          <span className="font-display text-[clamp(1.6rem,4.2vw,3.1rem)] font-semibold leading-tight tracking-[-0.03em] transition-transform duration-500 ease-[var(--ease-out-soft)] group-hover:translate-x-2">
-            {berikutnya.nama}
-          </span>
-          <span
-            aria-hidden
-            className="font-mono text-sm text-muted transition-colors duration-300 group-hover:text-accent"
-          >
-            ↗
+          <span className="block text-gray">next project</span>
+          <span className="text-2xl font-medium text-white transition-colors duration-200 group-hover:text-primary">
+            {berikutnya.nama} {"~~>"}
           </span>
         </Link>
       </nav>

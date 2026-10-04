@@ -1,57 +1,51 @@
+import { Icon } from "@/components/icon";
 import { SectionHead } from "@/components/section-head";
 import { profil } from "@/data/profile";
 
+const gayaBaris =
+  "flex items-center gap-[5px] text-gray transition-colors duration-200 hover:text-white";
+
 export function Kontak() {
   return (
-    <section id="kontak" className="shell scroll-mt-14 pt-24 pb-24 sm:pt-32 sm:pb-32">
-      <SectionHead label="Kontak" catatan={profil.status} />
+    <section id="kontak" className="shell scroll-mt-20 pt-[112px]">
+      <SectionHead label="contacts" className="md:w-[317px]" />
 
-      <div className="border-t border-rule pt-8">
-        <a
-          href={`mailto:${profil.email}`}
-          className="link-sweep font-display text-[clamp(1.75rem,6.5vw,4.5rem)] font-semibold leading-[1.05] tracking-[-0.035em] transition-colors duration-300 hover:text-accent"
-        >
-          {profil.email}
-        </a>
+      <div className="-mt-1 flex flex-col justify-between gap-8 md:flex-row md:items-start">
+        <p className="font-medium md:max-w-[505px]">
+          {profil.status}. Based in {profil.lokasi} — the fastest way to reach
+          me is by email.
+        </p>
 
-        <div className="mt-14 grid gap-10 border-t border-rule pt-8 sm:grid-cols-2 md:grid-cols-[1fr_1fr_1fr]">
-          <div>
-            <p className="label mb-3">Tempat</p>
-            <p className="text-sm leading-relaxed">{profil.lokasi}</p>
-          </div>
-
-          <div>
-            <p className="label mb-3">Di tempat lain</p>
-            <ul className="space-y-2">
-              {profil.sosial.map((s) => (
-                <li key={s.nama}>
-                  <a
-                    href={s.url}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="link-sweep text-sm transition-colors duration-300 hover:text-accent"
-                  >
-                    {s.nama}
-                    {s.handle && (
-                      <span className="ml-2 text-muted">{s.handle}</span>
-                    )}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {profil.cv && (
-            <div>
-              <p className="label mb-3">Berkas</p>
-              <a
-                href={profil.cv}
-                className="link-sweep text-sm transition-colors duration-300 hover:text-accent"
-              >
-                Unduh CV
+        <div className="self-start border border-gray p-4 md:self-auto">
+          <h3 className="mb-4 font-semibold text-white">Message me here</h3>
+          <ul className="flex flex-col gap-2">
+            <li>
+              <a href={`mailto:${profil.email}`} className={gayaBaris}>
+                <Icon nama="email" />
+                {profil.email}
               </a>
-            </div>
-          )}
+            </li>
+            {profil.sosial.map((s) => (
+              <li key={s.nama}>
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className={gayaBaris}
+                >
+                  <Icon nama={s.ikon} />
+                  {s.handle || s.nama}
+                </a>
+              </li>
+            ))}
+            {profil.cv && (
+              <li>
+                <a href={profil.cv} className={`${gayaBaris} pl-[37px]`}>
+                  {"Download CV ->"}
+                </a>
+              </li>
+            )}
+          </ul>
         </div>
       </div>
     </section>

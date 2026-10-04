@@ -1,28 +1,13 @@
 import type { Metadata } from "next";
-import {
-  Familjen_Grotesk,
-  Instrument_Sans,
-  JetBrains_Mono,
-} from "next/font/google";
+import { Fira_Code } from "next/font/google";
 import "./globals.css";
 import { profil, situs } from "@/data/profile";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { MediaRail } from "@/components/media-rail";
 
-const familjen = Familjen_Grotesk({
-  variable: "--font-familjen",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const instrument = Instrument_Sans({
-  variable: "--font-instrument",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const jetbrains = JetBrains_Mono({
-  variable: "--font-jetbrains",
+const fira = Fira_Code({
+  variable: "--font-fira",
   subsets: ["latin"],
   display: "swap",
 });
@@ -45,11 +30,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="id"
-      className={`${familjen.variable} ${instrument.variable} ${jetbrains.variable} h-full antialiased`}
-    >
-      <body className="flex min-h-full flex-col">
+    <html lang="id" className={`${fira.variable} h-full antialiased`}>
+      <body className="relative flex min-h-full flex-col">
+        <MediaRail />
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />

@@ -1,21 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  /* Kertas dingin, bukan cream. Tinta biru-kehitaman. Satu aksen indigo. */
-  --color-paper: #edeee9;
-  --color-ink: #15171b;
-  --color-muted: #71767c;
-  --color-rule: #d6d8d1;
-  --color-accent: #2e2be3;
-  --color-signal: #1f8a5b;
+  /* Palet dari desain Figma: latar abu gelap, teks abu, aksen ungu. */
+  --color-bg: #282c33;
+  --color-gray: #abb2bf;
+  --color-primary: #c778dd;
+  --color-white: #ffffff;
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
-  --font-display: var(--font-familjen), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --font-mono: var(--font-fira), ui-monospace, monospace;
+  --font-sans: var(--font-fira), ui-monospace, monospace;
 }
 
 @layer base {
@@ -25,21 +22,21 @@
   }
 
   body {
-    background-color: var(--color-paper);
-    color: var(--color-ink);
-    font-family: var(--font-sans);
+    background-color: var(--color-bg);
+    color: var(--color-gray);
+    font-family: var(--font-mono);
+    font-size: 1rem;
     overflow-x: clip;
   }
 
   ::selection {
-    background-color: var(--color-accent);
-    color: var(--color-paper);
+    background-color: var(--color-primary);
+    color: var(--color-white);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-primary);
     outline-offset: 3px;
-    border-radius: 1px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -58,74 +55,19 @@
 }
 
 @layer components {
-  /* Lebar isi + margin sisi yang konsisten di seluruh halaman. */
+  /* Lebar isi 1024px seperti desain, margin 16px di layar kecil. */
   .shell {
-    max-width: 1600px;
+    max-width: calc(1024px + 2rem);
     margin-inline: auto;
-    padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+    padding-inline: 1rem;
   }
 
-  /* Label utility: mono, kecil, huruf besar, spasi longgar. */
-  .label {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-  }
-
-  /* Masthead: tiap kata dipaskan selebar wadah lewat --len (jumlah huruf). */
-  .masthead {
-    container-type: inline-size;
-  }
-
-  .masthead-word {
-    display: block;
-    font-family: var(--font-display);
-    font-weight: 700;
-    line-height: 0.8;
-    letter-spacing: -0.045em;
-    font-size: calc(100cqw / var(--len) * 1.78);
-  }
-
-  /* Satu momen saat halaman dibuka: baris nama naik berurutan. */
-  .rise {
-    animation: rise 0.9s var(--ease-out-soft) both;
-  }
-
-  /* Tautan teks: garis bawah tumbuh dari kiri saat disentuh kursor. */
-  .link-sweep {
-    position: relative;
+  /* Ikon dari /public/figma dipakai sebagai mask supaya warnanya ikut
+     currentColor (abu biasa, putih saat disentuh kursor). */
+  .icon-mask {
     display: inline-block;
-  }
-
-  .link-sweep::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -0.08em;
-    height: 1px;
-    width: 100%;
+    flex-shrink: 0;
     background-color: currentColor;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s var(--ease-out-soft);
-  }
-
-  .link-sweep:hover::after,
-  .link-sweep:focus-visible::after {
-    transform: scaleX(1);
-  }
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(0.16em);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+    mask: var(--icon) center / contain no-repeat;
   }
 }

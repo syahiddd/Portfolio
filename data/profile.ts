@@ -8,6 +8,8 @@
 export type Sosial = {
   nama: string;
   url: string;
+  /** Nama berkas ikon di /public/figma, mis. "github" → /figma/github.svg */
+  ikon: string;
   /** Ditampilkan di sebelah nama, mis. "@syahid" */
   handle?: string;
 };
@@ -44,6 +46,12 @@ export const profil = {
   lokasi: "Indonesia",
   // GANTI: status ketersediaan, tampil di kolofon dengan titik hijau
   status: "Open for new projects",
+  // GANTI: satu kalimat di bawah judul besar halaman depan
+  ringkas:
+    "I build websites and web applications, handling everything from the interface to the data layer.",
+  // GANTI: taruh foto di /public lalu tulis path-nya, mis. "/foto.png".
+  // Foto berlatar transparan paling pas dengan desain. Kosongkan kalau belum ada.
+  foto: undefined as string | undefined,
   // GANTI
   email: "syahid2302@gmail.com",
   // GANTI: dipakai untuk <title> dan pratinjau tautan
@@ -57,12 +65,19 @@ export const profil = {
   fokus: ["Frontend", "Full-stack", "Interface"],
   // GANTI: hapus yang tidak dipakai
   sosial: [
-    { nama: "GitHub", url: "https://github.com/syahiddd", handle: "" },
-    { nama: "LinkedIn", url: "https://www.linkedin.com/in/syahid-amanullahh/", handle: "" },
-    { nama: "Instagram", url: "https://www.instagram.com/syhdamnlh/", handle: "" },
+    { nama: "GitHub", url: "https://github.com/syahiddd", ikon: "github", handle: "" },
+    { nama: "LinkedIn", url: "https://www.linkedin.com/in/syahid-amanullahh/", ikon: "linkedin", handle: "" },
+    { nama: "Instagram", url: "https://www.instagram.com/syhdamnlh/", ikon: "instagram", handle: "" },
   ] satisfies Sosial[],
   // GANTI atau hapus: taruh berkas CV di /public
   cv: undefined as string | undefined,
+  // GANTI: dikelompokkan dari stack proyek di bawah. Tambah atau hapus bebas.
+  keahlian: [
+    { nama: "Languages", isi: ["PHP", "TypeScript", "JavaScript"] },
+    { nama: "Databases", isi: ["MySQL", "PostgreSQL"] },
+    { nama: "Frameworks", isi: ["Laravel", "Next.js", "React", "Inertia.js", "Alpine.js"] },
+    { nama: "Other", isi: ["Tailwind CSS", "Blade", "Chart.js", "Fabric.js", "Google Generative AI"] },
+  ],
 };
 
 // GANTI SELURUHNYA: ini contoh isi supaya tata letaknya kelihatan.
